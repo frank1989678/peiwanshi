@@ -1,0 +1,23 @@
+{
+  "api_key": "fenqile",
+  "author": {
+    "type": "vendor",
+    "params": {
+      "code": "code"
+    },
+    "url": "http://open.api.fenqile.com/auth/connect.html?client_id=kaihei&redirect_uri={{%url%}}"
+  },
+  "payment": {
+    "type": [
+      5
+    ],
+    "name": "fenqile",
+    "weixin": {
+      "mp": false,
+      "h5": false
+    }
+  },
+  "name": "分期乐",
+  "author_params": "code=0fbF3CC8DF83B204A5A3E419EAF82E0582Be245a",
+  "baidu_statics_url": "https://hm.baidu.com/hm.js?6386615d609ddb1fdc947e8a701e07ab"
+}

@@ -1,0 +1,17 @@
+{
+  "api_key": "kakadai",
+  "author": {
+    "type": "phone"
+  },
+  "payment": {
+    "type": [
+      3
+    ],
+    "weixin": {
+      "mp": true,
+      "h5": true
+    }
+  },
+  "name": "卡卡贷",
+  "baidu_statics_url": "https://hm.baidu.com/hm.js?ce07f5e4e0488cb723729787191a2818"
+}

@@ -1,0 +1,23 @@
+{
+  "api_key": "thundermp",
+  "author": {
+    "type": "vendor",
+    "params": {
+      "uid": "uid",
+      "session": "sesskey"
+    },
+    "url": "https://act-vip-ssl.xunlei.com/m/vip/2018/game/",
+    "t-url": "https://act-vip-ssl.xunlei.com/m/vip/2018/fulu_game/"
+  },
+  "payment": {
+    "type": [
+      1
+    ],
+    "weixin": {
+      "mp": true,
+      "h5": false
+    }
+  },
+  "name": "迅雷",
+  "baidu_statics_url": "https://hm.baidu.com/hm.js?9e61cbcea2cf415f11f4b504812d2ca0"
+}

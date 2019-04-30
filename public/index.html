@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <!--优先使用 IE 最新版本和 Chrome-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--缓存过期时间 (每次部署时都会更新)-->
+    <meta http-equiv="Last-Modified" content="<%= VUE_APP_LAST_MODIFIED %>">
+    <!--禁止缓存，主要是 android webview-->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!--手机窗口的设置-->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <!--Safari浏览器全屏-->
+    <meta name="apple-touch-fullscreen" content="yes">
+    <!--添加到主屏后的标题-->
+    <meta name="apple-mobile-web-app-title" content="皮皮PIPI">
+    <!--不识别手机和邮箱格式-->
+    <meta content="telephone=no,email=no" name="format-detection">
+    <!--隐藏状态栏/设置状态栏颜色 default | black | black-translucent -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <!--用百度打开网页可能会对其进行转码（比如贴广告），避免转码可添加如下meta-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!--keywords-->
+    <meta name="keywords" content="皮皮PIPI"/>
+    <!--description-->
+    <meta name="description" content="皮皮PIPI"/>
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ强制全屏 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <title>皮皮PIPI</title>
+    <!--设备信息-->
+    <script inline src="<%= BASE_URL %>site/device.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+    <script inline src="<%= BASE_URL %>site/dayjs.min.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+    
+    <!--全局hostname值-->
+    <script>window.HOSTNAME = window.location.hostname;</script>
+    
+    <!--拦截器-->
+    <!--初始化,基本的依赖库-->
+    <% if (VUE_APP_ENVIRONMENT!=='production') { %>
+    <script src="<%= BASE_URL %>site/base.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+    <script src="<%= BASE_URL %>site/interceptors.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+    <% }else{ %>
+    <script inline src="<%= BASE_URL %>site/base.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+    <script inline src="<%= BASE_URL %>site/interceptors.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+    <% } %>
+
+    <!--favicon-->
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <!--Safari 添加到桌面的图标-->
+    <link rel="apple-touch-icon"
+          href="<%= BASE_URL %>static/images/touch/touch-icon-152.png<%= VUE_APP_PUCLIC_STATIC_VER %>" sizes="152x152">
+    <link rel="apple-touch-icon"
+          href="<%= BASE_URL %>static/images/touch/touch-icon-120.png<%= VUE_APP_PUCLIC_STATIC_VER %>" sizes="120x120">
+    <link rel="apple-touch-icon"
+          href="<%= BASE_URL %>static/images/touch/touch-icon-76.png<%= VUE_APP_PUCLIC_STATIC_VER %>" sizes="76x76">
+    <link rel="apple-touch-icon"
+          href="<%= BASE_URL %>static/images/touch/touch-icon-60.png<%= VUE_APP_PUCLIC_STATIC_VER %>" sizes="60x60">
+    <!--weui css-->
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+</head>
+<body>
+<div id="app"></div>
+<!-- lazysizes 图片懒加载插件  -->
+<script src="<%= BASE_URL %>static/base/js/lazysizes.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+<!-- 线上环境(测试线/正式线)直接引用 vue 全家桶，本地不引用 -->
+<!-- ['vue 2.5.17','vuex v3.0.1','vue-router v3.0.2']-->
+<% if (VUE_APP_ENVIRONMENT!=='local') { %>
+<script src="<%= BASE_URL %>static/base/js/vue.lib.js<%= VUE_APP_PUCLIC_STATIC_VER %>"></script>
+<% } %>
+<!--weui js-->
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.4/weui.min.js"></script>
+<!-- built files will be auto injected -->
+</body>
+</html>
