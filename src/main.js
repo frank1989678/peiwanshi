@@ -3,9 +3,10 @@ import App from './App.vue'
 
 import router from './router'
 
-require('./assets/sass/style.scss');
+require('./assets/sass/index.scss');
 
-import './components/preview/index'
+// import './components/preview/index'
+import './vue'
 
 Vue.config.productionTip = false
 

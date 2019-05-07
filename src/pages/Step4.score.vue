@@ -28,26 +28,22 @@
 
 <script>
 
-import '../assets/sass/step.scss'
-
 export default {
     data() {
         return {
             pass: true,
             score: 0,
             cat: [
-                {name: '英雄联盟', icon: 'http://game-play.oss-cn-hangzhou.aliyuncs.com/2019/1/14/6d01798f13824cf2823a2a5e9f900b96.png'},
-                {name: '英雄联盟', icon: 'http://game-play.oss-cn-hangzhou.aliyuncs.com/2019/1/14/7cf044fab1794d6d8252ca5309a8d1e8.png'},
-                {name: '英雄联盟', icon: 'http://game-play.oss-cn-hangzhou.aliyuncs.com/2019/1/14/1c3e8d7aa13a43f795559ed6417be9ef.png'},
-                {name: '英雄联盟', icon: 'http://game-play.oss-cn-hangzhou.aliyuncs.com/2019/3/18/ceb4475b25ad494894f4f9c95aea4670.png'},
-                {name: '英雄联盟', icon: 'http://game-play.oss-cn-hangzhou.aliyuncs.com/2019/3/18/932e36ebe19d40b89b9a91c6253de668.png'},
-                {name: '英雄联盟', icon: 'http://game-play.oss-cn-hangzhou.aliyuncs.com/2019/3/18/c45d58c0763e421891b5118833691186.png'}
+                {cid: 30, name: '王者荣耀', icon: '//game-play.oss-cn-hangzhou.aliyuncs.com/2019/1/14/6d01798f13824cf2823a2a5e9f900b96.png'},
+                {cid: 31, name: '刺激战场', icon: '//game-play.oss-cn-hangzhou.aliyuncs.com/2019/1/14/7cf044fab1794d6d8252ca5309a8d1e8.png'},
+                {cid: 32, name: '绝地求生', icon: '//game-play.oss-cn-hangzhou.aliyuncs.com/2019/1/14/1c3e8d7aa13a43f795559ed6417be9ef.png'},
+                {cid: 33, name: '英雄联盟', icon: '//game-play.oss-cn-hangzhou.aliyuncs.com/2019/3/18/ceb4475b25ad494894f4f9c95aea4670.png'},
             ]
         }
     },
     methods: {
-        goNext() {
-            this.$router.push({name: 'step5', path: '/skill' });
+        goNext(item) {
+            this.$router.push({name: 'step5', path: '/skill', query: {cid: item.cid} });
         },
         goRetry() {
             this.$router.push({name: 'step3', path: '/exam' });  

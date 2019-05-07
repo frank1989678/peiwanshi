@@ -23,13 +23,13 @@
             <div class="flex cell">
                 <div class="txt">姓名</div>
                 <div class="flex cnt">
-                    <input class="ipt" type="text" name="username" v-model="form.name" placeholder="请输入姓名" />
+                    <input class="ipt" type="text" name="username" v-model="form.name" autocomplete="off" placeholder="请输入姓名" />
                 </div>
             </div>
             <div class="flex cell">
                 <div class="txt">证件号</div>
                 <div class="flex cnt">
-                    <input class="ipt" type="text" name="username" v-model="form.num" placeholder="请输入和姓名对应的证件号" />
+                    <input class="ipt" type="text" name="username" v-model="form.num" autocomplete="off" placeholder="请输入和姓名对应的证件号" />
                 </div>
             </div>
             
@@ -37,9 +37,9 @@
             <div class="img-wrap">
                 <div class="hd">本人手持证件照</div>
                 <div class="flex bd">
-                    <div class="li eg"><img preview="1" class="img" src="../assets/images/cardHand.jpg" alt="本人手持证件照"></div>
+                    <div class="li eg"><img @click="showBig" class="img" src="../assets/images/cardHand.jpg" alt="本人手持证件照"></div>
                     <div class="li">
-                        <upload-img :all-upload="true" :max="1" :list.sync="advicePicUrls"/>
+                        <upload-img :all-upload="true" :max="1" :list.sync="cardHandImg"/>
                     </div>
                 </div>
             </div>
@@ -47,9 +47,9 @@
             <div class="img-wrap">
                 <div class="hd">证件照正面</div>
                 <div class="flex bd">
-                    <div class="li eg"><img preview="1" class="img" src="../assets/images/card.jpg" alt="证件照正面"></div>
+                    <div class="li eg"><img  @click="showBig" class="img" src="../assets/images/card.jpg" alt="证件照正面"></div>
                     <div class="li">
-                        <upload-img :all-upload="true" :max="1" :list.sync="advicePicUrls"/>
+                        <upload-img :all-upload="true" :max="1" :list.sync="cardImg"/>
                     </div>
                 </div>
             </div>
@@ -64,13 +64,12 @@
 
 <script>
 
-import '../assets/sass/step.scss'
-
 import UploadImg from '../components/Upload.Img.List'
 export default {
     components: { UploadImg },
     data() {
         return {
+            abc: false,
             ul: [
                 {name: '身份认证', cls: 'light'},
                 {name: '-', cls: 'sp'},
@@ -91,12 +90,39 @@ export default {
                 name: '',
                 num: ''
             },
-            advicePicUrls: []
+            cardHandImg: [],
+            cardImg: []
         }
     },
     methods: {
         goNext() {
-            this.$router.push({name: 'step2', path: '/study' });
+            const identityCard = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+            const {cardHandImg, cardImg} = this;
+            const {name, num, type} = this.form;
+            const img = cardHandImg.concat(cardImg);
+
+            if (!name) {
+                this.$topTips('请输入姓名');
+
+            } else if (!num) {
+                this.$topTips('请输入证件号');
+
+            } else if (type === 'idCard' && !identityCard.test(num)) {
+                this.$topTips('身份证号码格式错误');
+
+            } else if (type === 'other' && img.length != 2) {
+                if (cardHandImg.length == 0) {
+                    this.$topTips('请上传手持证件照');
+                } else {
+                    this.$topTips('请上传证件照正面');
+                }
+
+            } else {
+                this.$router.push({name: 'step2', path: '/study' });
+            }
+        },
+        showBig(el) {
+            weui.gallery(el.currentTarget.src, {className: 'ui-gallery'});
         }
     },
     mounted() {

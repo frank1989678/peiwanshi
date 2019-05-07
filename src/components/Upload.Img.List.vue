@@ -3,7 +3,7 @@
     <div>
         <ul class="c-upload-img" id="images">
             <li :key="index" v-for="(item,index) in imgArray">
-                <img :src="item.dataUrl" preview="0">
+                <img :src="item.dataUrl" @click="showBig">
                 <!--上传中-->
                 <div v-if="item.status===1" class="upload-status-box is-loading">
                     <div class="progress-text" :id="`text-${item.id}`"></div>
@@ -15,9 +15,12 @@
             </li>
             <li v-if="!readOnly" v-show="imgArray.length<max" class="is-add">
                 <p class="add-title">点击上传</p>
-                <input ref="input" type="file" class="tap" name="image" accept="image/*" multiple="multiple" @change=handleInputChange />
+                <input ref="input" type="file" class="tap" name="image" accept="image/*" multiple="multiple" @change=handleInputChange v-if="max > 1" />
+                <input ref="input" type="file" class="tap" name="image" accept="image/*" @change=handleInputChange v-else />
             </li>
         </ul>
+
+        <!-- <div style="position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;">{{aaaaaa}}</div> -->
     </div>
 </template>
 <script>
@@ -26,7 +29,7 @@
  * @link https://github.com/Aus0049/react-component/blob/master/src/components/DataEntry/Uploader/components/Uploader.js
  */
 import EXIF from 'exif-js'
-import { api_upload} from '../api/url'
+import { api_upload } from '../api/url'
 // import User from '../controller/user'
 import getUuid from '../utils/uuid'
 
@@ -53,13 +56,13 @@ export default {
                 imgUrl: url
             })
         });
-        this.$nextTick(() => {
-            this.$previewRefresh()
-        })
+        // this.$nextTick(() => {
+        //     this.$previewRefresh()
+        // })
     },
     data() {
         return {
-            prefixCls: 'zby-uploader',
+            aaaaaa: '',
             compress: true,
             compressionRatio: 20,
             data: [],
@@ -77,6 +80,9 @@ export default {
         this.destroy = true;
     },
     methods: {
+        showBig(el) {
+            weui.gallery(el.currentTarget.src, {className: 'ui-gallery'});
+        },
         // 准备上传
         beforeUpload(item, _this) {
             // 检查是否是ios ios图片使用canvas压缩之后图片size为0 原因未知
@@ -148,7 +154,7 @@ export default {
                 return item;
             })];
             this.$nextTick(() => {
-                this.$previewRefresh();
+                // this.$previewRefresh();
                 this.emitUpdateList();
             });
 
@@ -162,14 +168,7 @@ export default {
         },
         // 上传文件input
         handleInputChange(event) {
-            const {
-                typeArray,
-                max,
-                maxSize
-            } = this;
-            const {
-                imgArray
-            } = this;
+            const { typeArray, max, maxSize, imgArray } = this; 
             const _this = this;
             const uploadedImgArray = []; // 真正在页面显示的图片数组
             const uploadQueue = []; // 图片上传队列 这个队列是在图片选中到上传之间使用的 上传完成则清除
@@ -179,11 +178,7 @@ export default {
 
             // 检查文件个数 页面显示的图片个数不能超过限制
             if (imgArray.length + selectedFiles.length > max) {
-                this.$toast({
-                    message: '最多只能选择' + max + '张图片',
-                    duration: 2000
-                });
-                // Toast.error('最多只能选择' + max + '张图片', 2000, undefined, false);
+                this.$toast( '最多只能选择' + max + '张图片');
                 // 清空input
                 this.$refs.input.value = null;
                 return;
@@ -208,20 +203,14 @@ export default {
 
             // 有错误跳出
             if (imgPass.typeError) {
-                this.$toast({
-                    message: '不支持文件类型',
-                    duration: 2000
-                });
+                this.$toast('不支持文件类型');
                 // Toast.error('不支持文件类型', 2000, undefined, false);
                 this.$refs.input.value = null;
                 return;
             }
 
             if (imgPass.sizeError) {
-                this.$toast({
-                    message: '文件大小超过限制',
-                    duration: 2000
-                });
+                this.$toast('文件大小超过限制');
                 // Toast.error('文件大小超过限制', 2000, undefined, false);
                 this.$refs.input.value = null;
                 return;
@@ -537,9 +526,7 @@ export default {
             // 开始发送请求上传
             const _this = this;
             const xhr = new XMLHttpRequest();
-            const {
-                uploadUrl
-            } = this;
+            const {uploadUrl} = this;
             const formData = data.formData;
             // 进度监听
             // xhr.addEventListener("error", _this.handleUploadEnd(data, undefined, 3), false);
@@ -565,9 +552,15 @@ export default {
                         // 上传成功
                         _this.handleUploadEnd(data, result, 2);
                     } else {
+                        _this.$toast(result.msg || '上传失败');
+                        // _this.aaaaaa = JSON.stringify(result);
+                        result.data = {
+                            url: '',
+                            key: getUuid()
+                        };
                         // 上传失败
                         // if (!User.tryLogin()) return false;
-                        _this.handleUploadEnd(data, {}, 3);
+                        _this.handleUploadEnd(data, result, 3);
                     }
                 }
             };

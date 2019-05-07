@@ -21,10 +21,10 @@ module.exports = {
     },
     // @link https://cli.vuejs.org/zh/config/#outputdir
     // 构建文件的目录
-    outputDir: process.env.VUE_APP_BUILD_OUTPUT_DIR,
+    outputDir: 'dist/' + process.env.VUE_APP_BUILD_OUTPUT_DIR,
     // @link https://cli.vuejs.org/zh/config/#baseurl
     // 部署应用包时的基本 URL
-    publicPath: '/',
+    publicPath: '/player/',
     // @link https://cli.vuejs.org/zh/config/#productionsourcemap
     // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建
     productionSourceMap: false,
@@ -48,5 +48,6 @@ module.exports = {
                 ]
             }
         }
-    }
+    },
+    lintOnSave: false
 };

@@ -31,7 +31,8 @@
             </ul>
 
             <div class="button">
-                <button @click="goNext" class="btn btn-primary">进入考核</button>
+                <!-- <button @click="goNext" class="btn btn-primary">进入考核</button> -->
+                <button @click="goNext" :class="'btn btn-' + (studyAll ? 'primary' : 'disabled')">进入考核</button>
             </div>
         </div>
 
@@ -55,7 +56,7 @@
 
 <script>
 
-import '../assets/sass/step.scss'
+import axios from '../utils/axios'
 
 export default {
     data() {
@@ -74,15 +75,24 @@ export default {
                 {name: '接单', cls: ''}
             ],
             subject: [
-                {title: '这里显示课件标题，最多显示两行文字...', status: false, time: 300, poster: 'http://h5.apeiwan.com/htm/img/1.jpg'},
-                {title: '课件标题，显示文字...', status: true, time: 300, poster: 'http://h5.apeiwan.com/htm/img/2.jpg'},
-                {title: '这里显示课件标题，最多显示两行文字...', status: false, time: 300, poster: 'http://h5.apeiwan.com/htm/img/3.jpg'}
+                {title: '这里显示课件标题，最多显示两行文字...', status: false, time: 300, poster: '//h5.apeiwan.com/htm/img/1.jpg'},
+                {title: '课件标题，显示文字...', status: true, time: 300, poster: '//h5.apeiwan.com/htm/img/2.jpg'},
+                {title: '这里显示课件标题，最多显示两行文字...', status: false, time: 300, poster: '//h5.apeiwan.com/htm/img/3.jpg'}
             ]
+        }
+    },
+    computed: {
+        studyAll() {
+            let count = 0;
+            this.subject.forEach( item => {
+                count += item.status ? 1 : 0;
+            })
+            return count === this.subject.length;
         }
     },
     methods: {
         playVideo(item) {
-            this.videoSrc = item.src || 'https://ykugc.cp31.ott.cibntv.net/677462F65A937716446493C39/03000801005CB18BE7BCF48332D17E080963B6-C3AE-4FC9-B997-FAA401FF8619.mp4?ccode=0501&duration=84&expire=18000&psid=9cc0839ae7283bc0b98ac460b192b0ca&ups_client_netip=71397632&ups_ts=1556587297&ups_userid=&utid=jzorFcOm6E4CAXjKGTEKfkDu&vid=XNDEzNjI0MjU3Ng&vkey=A7f4b8b1683bd2dd41dae6f48da5335ec&sp=';
+            this.videoSrc = item.src || 'https://vali.cp31.ott.cibntv.net/youku/6975439072A4671C76588446C/03000801005C80D1C6F5CAF003E88098C0FD0D-54AC-4E97-A2D4-84273B51AFF6.mp4?sid=055712378185518552281_00_A7316d0e3a223f1e61e372d763a63040a&sign=8eddb6143b9a11d5bb8c90bbebd41f3d&ctype=50&hd=1';
 
             this.$nextTick(() => {
                 const stop = false;
@@ -97,6 +107,12 @@ export default {
                     this.playing = true;
                     myvideo.play();
                 }
+            })
+            // item.status = true;
+            // return;
+            !item.status && axios.post('/xxx', {id: item.id}).then( res => {
+                item.status = true;
+                console.log(8888)
             })
         },
         onPlay() {
@@ -115,12 +131,11 @@ export default {
 
         },
         onCloseVideo() {
-            console.log(9999)
             this.playing = false;
             this.videoSrc = '';
         },
         goNext() {
-            this.$router.push({name: 'step3', path: '/exam' });
+            this.studyAll ? this.$router.push({name: 'step3', path: '/exam' }) : this.$toast('全部学习之后，才能进入考核');
         }
     },
     mounted() {

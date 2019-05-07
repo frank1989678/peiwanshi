@@ -18,24 +18,23 @@
 
         <div class="agreement">
             <i :class="['cbx', {checked: agreement}]" @click="agreement = !agreement">同意</i>
-            <span @click="showDialog = true" class="link">《皮皮陪练师入驻协议》</span>
+            <span @click="goLink" class="link">《皮皮陪练师入驻协议》</span>
         </div>
 
         <div class="button">
             <button @click="goNext" :class="'btn btn-' + (agreement ? 'primary' : 'disabled')">立即申请</button>
         </div>
-    
+        
+        <!-- 使用iframe加载页面，在ios中出现高度塌陷问题
         <div class="dialog" v-if="showDialog">
-            <iframe class="iframe" src="http://open.wzpeilian.com/app-word-h5/godprotocol" frameborder="0"></iframe>
+            <iframe class="iframe" src="//open.wzpeilian.com/app-word-h5/godprotocol" frameborder="0"></iframe>
             <button class="close" @click="showDialog = false"></button>
-        </div>
+        </div> -->
     </div>
 
 </template>
 
 <script>
-
-import '../assets/sass/apply.scss'
 export default {
     data() {
         return {
@@ -44,16 +43,25 @@ export default {
         }
     },
     methods: {
+        goLink() {
+            // this.showDialog = true;
+            window.location.href = '//open.wzpeilian.com/app-word-h5/godprotocol';
+        },
         goNext() {
             if (this.agreement) {
                 this.$router.push({name: 'step1', path: '/authentication' });
             } else {
-                weui.alert('请先同意皮皮陪练师入驻协议');
+                this.$alert('请先同意皮皮陪练师入驻协议');
             }
+        },
+        getToken() {
+            const para = getRequestUrlParam(window.location.href);
+            para.token && setToken(para.token);
         }
     },
     mounted() {
         document.title = '申请成为陪练师';
+        this.getToken();
     }
 }
 </script>
